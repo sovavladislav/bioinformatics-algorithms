@@ -21,10 +21,12 @@ def __load_matrix():
 
 
 def blosum_62_scoring(a, b):
-    blosum_62_scoring.__matrix = __load_matrix()
+    blosum_62_scoring.__matrix, blosum_62_scoring.__position_dictionary = __load_matrix()
     position_a = blosum_62_scoring.__position_dictionary[a]
     position_b = blosum_62_scoring.__position_dictionary[b]
     return blosum_62_scoring.__matrix[position_a][position_b]
+
+blosum_62_scoring.__position_dictionary = {}
 
 
 

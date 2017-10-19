@@ -30,7 +30,7 @@ def __maximum_score(matrix):
 
     return max_val, max_val_i, max_val_j
 
-def __trace_back(chain_a, chain_b, matrix, gap_penalty = -1,  similarity = default_similarity_func):
+def __trace_back(chain_a, chain_b, matrix, similarity, gap_penalty = -1):
 
     max_val, max_val_i, max_val_j = __maximum_score(matrix)
 
@@ -59,7 +59,7 @@ def __trace_back(chain_a, chain_b, matrix, gap_penalty = -1,  similarity = defau
 
     return alignment_a, alignment_b
 
-def smith_waterman(chain_a, chain_b, gap_penalty = -1, similarity_func, print_matrix=False):
+def smith_waterman(chain_a, chain_b, similarity_func, gap_penalty = -1, print_matrix=False):
     matrix = __fill_matrix(chain_a, chain_b, gap_penalty=gap_penalty, similarity_func=similarity_func)
     if print_matrix:
         print(len(matrix[0]))
