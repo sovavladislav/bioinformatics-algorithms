@@ -3,7 +3,7 @@ import numpy as np
 from needleman_wunsch import needleman_wunsch
 
 
-def __nw_score_last_line(chain_a, chain_b, gap_penalty, similarity_func):
+def __nw_score_last_line(chain_a, chain_b, similarity_func, gap_penalty):
     len_chain_a = len(chain_a)
     len_chain_b = len(chain_b)
     previous_row = np.zeros(shape=(len_chain_b + 1), dtype=np.int)
@@ -26,7 +26,7 @@ def __nw_score_last_line(chain_a, chain_b, gap_penalty, similarity_func):
     return previous_row
 
 
-def __hirschberg(chain_a, chain_b, gap_penalty, similarity_func):
+def __hirschberg(chain_a, chain_b, similarity_func, gap_penalty):
     first_aligned, second_aligned = [], []
     length_chain_a, length_chain_b = len(chain_a), len(chain_b)
 
@@ -40,9 +40,7 @@ def __hirschberg(chain_a, chain_b, gap_penalty, similarity_func):
             second_aligned.append("-" * len(chain_a[i]))
 
     elif length_chain_a == 1 or length_chain_b == 1:
-        first_aligned, second_aligned = needleman_wunsch(chain_a, chain_b,
-                                                         gap_penalty=gap_penalty,
-                                                         similarity_func=similarity_func)
+        first_aligned, second_aligned = needleman_wunsch(chain_a, chain_b, similarity_func, gap_penalty)
 
     else:
 
@@ -50,9 +48,8 @@ def __hirschberg(chain_a, chain_b, gap_penalty, similarity_func):
 
         middle_chain_a = int(length_chain_a / 2)
 
-        row_left = __nw_score_last_line(chain_a[:middle_chain_a], chain_b, gap_penalty, similarity_func)
-        row_right = __nw_score_last_line(chain_a[middle_chain_a:][::-1], chain_b[::-1], gap_penalty,
-                                         similarity_func)
+        row_left = __nw_score_last_line(chain_a[:middle_chain_a], chain_b, similarity_func, gap_penalty)
+        row_right = __nw_score_last_line(chain_a[middle_chain_a:][::-1], chain_b[::-1], similarity_func, gap_penalty)
 
         reversed_row_right = row_right[::-1]
 
@@ -65,11 +62,9 @@ def __hirschberg(chain_a, chain_b, gap_penalty, similarity_func):
         # Recursive calls
 
         aligned_first_left, aligned_second_left = __hirschberg(chain_a[:middle_chain_a],
-                                                               chain_b[:middle_chain_b], gap_penalty,
-                                                               similarity_func)
+                                                               chain_b[:middle_chain_b], similarity_func, gap_penalty)
         algined_first_right, aligned_second_right = __hirschberg(chain_a[middle_chain_a:],
-                                                                 chain_b[middle_chain_b:], gap_penalty,
-                                                                 similarity_func)
+                                                                 chain_b[middle_chain_b:], similarity_func, gap_penalty)
 
         first_aligned = list(aligned_first_left) + list(algined_first_right)
         second_aligned = list(aligned_second_left) + list(aligned_second_right)
@@ -77,5 +72,5 @@ def __hirschberg(chain_a, chain_b, gap_penalty, similarity_func):
     return "".join(first_aligned), "".join(second_aligned)
 
 
-def hirschberg(chain_a, chain_b, gap_penalty, similarity_func):
-    return __hirschberg(chain_a, chain_b, gap_penalty, similarity_func)
+def hirschberg(chain_a, chain_b, similarity_func, gap_penalty):
+    return __hirschberg(chain_a, chain_b, similarity_func, gap_penalty)
