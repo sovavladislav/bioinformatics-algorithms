@@ -65,4 +65,5 @@ def smith_waterman(chain_a, chain_b, similarity_func, gap_penalty = -1, print_ma
         print(len(matrix[0]))
 
     alignments = __trace_back(chain_a, chain_b, matrix, gap_penalty=gap_penalty, similarity=similarity_func)
-    return alignments
+    score = matrix[-1][-1]
+    return alignments, score

@@ -50,4 +50,5 @@ def needleman_wunsch(chain_a, chain_b, similarity_func, gap_penalty = -1, print_
         print(len(matrix[0]))
 
     aligments = __trace_back(chain_a, chain_b, matrix, similarity_func, gap_penalty=gap_penalty)
-    return aligments
+    score = matrix[-1][-1]
+    return aligments, score
