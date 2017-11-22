@@ -41,7 +41,7 @@ def __hirschberg(chain_a, chain_b, similarity_func, gap_penalty):
 
     elif length_chain_a == 1 or length_chain_b == 1:
         alignments,score = needleman_wunsch(chain_a, chain_b, similarity_func, gap_penalty)
-        first_aligned, second_al = alignments[0]
+        first_aligned, second_aligned = alignments[0], alignments[1]
         
 
     else:
