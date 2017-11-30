@@ -10,13 +10,13 @@ def msa(chains, gap_penalty):
             _, matrix[i][j] = needleman_wunsch(chains[i], chains[j], score, gap_penalty)
             matrix[j][i] = matrix[i][j]
 
-    # choose minimum SUM distance of strings and denote it as center string
+    # choose minimum SUM distance of chains and denote it as center chain
     min_row = matrix.sum(axis=0).argmin()
 
     # set this chain first
     move_elem(chains, min_row, 0)
 
-    #multiple aligment by pairwise alignment
+    #multiple aligment by pairwise alignment between s1
     for i in range(1, len(chains)-1):
         for j in range(1, i+1):
             alignments, s = needleman_wunsch(chains[0], chains[j], score, gap_penalty)
