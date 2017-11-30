@@ -28,7 +28,7 @@ def msa(chains, gap_penalty):
         alignments, s = needleman_wunsch(chains[0], chains[i], score, gap_penalty)
         chains[0], chains[i] = alignments[0], alignments[1]
 
-    #return back center string
+    #return back chain
     move_elem(chains, 0, min_row)
 
     res = []
