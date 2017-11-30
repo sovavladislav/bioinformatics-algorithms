@@ -5,6 +5,7 @@ from smith_waterman import smith_waterman
 from hirschberg import hirschberg
 from needleman_wunsch import needleman_wunsch
 from nw_affine_penalty import nw_affine_penalty
+from msa import msa
 
 import input_output as io
 
@@ -31,6 +32,11 @@ def main(filename, algorithm_type, gap_penalty_open, gap_penalty_extension):
                                            chains[1].chain,
                                            blosum_62_scoring, gap_penalty_open)
             io.print_output(chains[0].name, chains[1].name, alignments[0], alignments[1], None)
+        elif algorithm_type == 'msa':
+            chains_raw = [c.chain for c in chains]
+            alignments = msa(chains_raw, gap_penalty_open)
+            chains_str = ["".join(c.chain) for c in chains]
+            io.print_output_multi(chains_str, alignments)
 
 
         else:
@@ -45,7 +51,7 @@ if __name__ == "__main__":
 
     parser.add_argument('-ogap',
                         type=int,
-                        default=10,
+                        default=-5,
                         help='Opening gap penalty penalty value for affine gap system')
 
     parser.add_argument('-egap',
@@ -53,7 +59,7 @@ if __name__ == "__main__":
                         default=2,
                         help='Extension gap penalty value for affine gap system')
 
-    parser.add_argument('algorithm', choices=['nw', 'nwap', 'sw', 'hb'],
+    parser.add_argument('algorithm', choices=['nw', 'nwap', 'sw', 'hb', 'msa'],
                         help='Choose which algorithm to use: nw - Needleman-Wunsch, nwap - Needleman-Wunsch with affine gap penalty,'
                              'sw - Smith-Waterman, hb - Hirschberg.')
 
